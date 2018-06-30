@@ -5,8 +5,9 @@
 # Consult LICENSE.txt or http://opensource.org/licenses/BSD-3-Clause.
 
 import sys
-from os.path import dirname, join
+from os.path import dirname, basename, join
 from random import randint
+from shutil import copyfile
 
 from PIL import Image, ImageDraw, ImageFont
 
@@ -82,20 +83,10 @@ def add_color_info(info):
 
 
 def write_images(info, dir_path):
-    for tp, size, f, ext in [
-        ('welcome', welcome_size, mk_welcome_image, '.bmp'),
-        ('header',  header_size,  mk_header_image,  '.bmp'),
-        ('icon',    icon_size,    mk_icon_image,    '.ico'),
-        ]:
-        key = tp + '_image'
-        if key in info:
-            im = Image.open(info[key])
-            im = im.resize(size)
-        else:
-            add_color_info(info)
-            im = f(info)
-        assert im.size == size
-        im.save(join(dir_path, tp + ext))
+    copyfile(join(dirname(info['welcome_image']),'welcome.bmp'), join(dir_path,'welcome.bmp'))
+    copyfile(join(dirname(info['welcome_image']),'header.bmp'), join(dir_path,'header.bmp'))
+    copyfile(join(dirname(info['welcome_image']),'icon.ico'), join(dir_path,'icon.ico'))
+
 
 
 if __name__ == '__main__':
